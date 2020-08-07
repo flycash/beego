@@ -100,7 +100,10 @@ func parserPkg(pkgRealpath string) error {
 					if specDecl.Recv != nil {
 						exp, ok := specDecl.Recv.List[0].Type.(*ast.StarExpr) // Check that the type is correct first beforing throwing to parser
 						if ok {
-							parserComments(specDecl, fmt.Sprint(exp.X), pkg.PkgPath)
+							err := parserComments(specDecl, fmt.Sprint(exp.X), pkg.PkgPath)
+							if err != nil {
+								panic(err)
+							}
 						}
 					}
 				}
@@ -407,7 +410,11 @@ func getparams(str string) []string {
 }
 
 func genRouterCode(pkgRealpath string) {
-	os.Mkdir(getRouterDir(pkgRealpath), 0755)
+	routerDir := getRouterDir(pkgRealpath)
+	err := os.MkdirAll(routerDir, 0755)
+	if err != nil {
+		logs.Error("could not create the router dir, %v", err)
+	}
 	logs.Info("generate router from comments")
 	var (
 		globalinfo   string
@@ -508,7 +515,8 @@ func genRouterCode(pkgRealpath string) {
 	}
 
 	if globalinfo != "" {
-		f, err := os.Create(filepath.Join(getRouterDir(pkgRealpath), commentFilename))
+		fn := filepath.Join(getRouterDir(pkgRealpath), commentFilename)
+		f, err := os.Create(fn)
 		if err != nil {
 			panic(err)
 		}
@@ -518,7 +526,10 @@ func genRouterCode(pkgRealpath string) {
 		content := strings.Replace(globalRouterTemplate, "{{.globalinfo}}", globalinfo, -1)
 		content = strings.Replace(content, "{{.routersDir}}", routersDir, -1)
 		content = strings.Replace(content, "{{.globalimport}}", globalimport, -1)
-		f.WriteString(content)
+		_, err = f.WriteString(content)
+		if err != nil {
+			panic(err)
+		}
 	}
 }
 
