@@ -472,6 +472,8 @@ func (p *ControllerRegister) InsertFilterChain(pattern string, chain FilterChain
 	root := p.chainRoot
 	filterFunc := chain(root.filterFunc)
 	p.chainRoot = newFilterRouter(pattern, BConfig.RouterCaseSensitive, filterFunc, params...)
+	p.chainRoot.next = root
+
 }
 
 

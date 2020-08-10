@@ -15,6 +15,7 @@
 package orm
 
 import (
+	"context"
 	"time"
 )
 
@@ -28,7 +29,7 @@ type Invocation struct {
 
 	mi *modelInfo
 	// f is the Orm operation
-	f  func()
+	f  func(ctx context.Context)
 
 	// insideTx indicates whether this is inside a transaction
 	InsideTx bool
@@ -43,6 +44,6 @@ func (inv *Invocation) GetTableName() string {
 	return ""
 }
 
-func (inv *Invocation) execute() {
-	inv.f()
+func (inv *Invocation) execute(ctx context.Context) {
+	inv.f(ctx)
 }

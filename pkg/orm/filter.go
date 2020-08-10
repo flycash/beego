@@ -31,6 +31,6 @@ var globalFilterChains = make([]FilterChain, 0, 4)
 // AddGlobalFilterChain adds a new FilterChain
 // All orm instances built after this invocation will use this filterChain,
 // but instances built before this invocation will not be affected
-func AddGlobalFilterChain(filterChain FilterChain) {
-	globalFilterChains = append(globalFilterChains, filterChain)
+func AddGlobalFilterChain(filterChain... FilterChain) {
+	globalFilterChains = append(globalFilterChains, filterChain...)
 }

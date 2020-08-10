@@ -63,7 +63,10 @@ func (builder *FilterChainBuilder) report(startTime time.Time, endTime time.Time
 	host := req.GetRequest().URL.Host
 	path := req.GetRequest().URL.Path
 
-	status := resp.StatusCode
+	status := -1
+	if resp != nil {
+		status = resp.StatusCode
+	}
 
 	dur := int(endTime.Sub(startTime) / time.Millisecond)
 
