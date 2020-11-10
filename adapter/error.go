@@ -17,10 +17,10 @@ package adapter
 import (
 	"net/http"
 
-	"github.com/astaxie/beego/adapter/context"
-	beecontext "github.com/astaxie/beego/server/web/context"
+	"github.com/i-open/beego/adapter/context"
+	beecontext "github.com/i-open/beego/server/web/context"
 
-	"github.com/astaxie/beego/server/web"
+	"github.com/i-open/beego/server/web"
 )
 
 const (

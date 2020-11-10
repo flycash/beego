@@ -6,9 +6,9 @@ an example for use captcha
 package controllers
 
 import (
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/cache"
-	"github.com/astaxie/beego/utils/captcha"
+	"github.com/i-open/beego"
+	"github.com/i-open/beego/cache"
+	"github.com/i-open/beego/utils/captcha"
 )
 
 var cpt *captcha.Captcha

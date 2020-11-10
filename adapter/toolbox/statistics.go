@@ -17,7 +17,7 @@ package toolbox
 import (
 	"time"
 
-	"github.com/astaxie/beego/server/web"
+	"github.com/i-open/beego/server/web"
 )
 
 // Statistics struct

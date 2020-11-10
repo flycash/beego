@@ -21,9 +21,9 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 
-	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/server/web"
-	"github.com/astaxie/beego/server/web/context"
+	"github.com/i-open/beego"
+	"github.com/i-open/beego/server/web"
+	"github.com/i-open/beego/server/web/context"
 )
 
 // FilterChainBuilder is an extension point,

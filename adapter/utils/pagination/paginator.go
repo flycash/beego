@@ -17,7 +17,7 @@ package pagination
 import (
 	"net/http"
 
-	"github.com/astaxie/beego/core/utils/pagination"
+	"github.com/i-open/beego/core/utils/pagination"
 )
 
 // Paginator within the state of a http request.

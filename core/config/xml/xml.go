@@ -20,8 +20,8 @@
 //
 // Usage:
 //  import(
-//    _ "github.com/astaxie/beego/config/xml"
-//      "github.com/astaxie/beego/config"
+//    _ "github.com/i-open/beego/config/xml"
+//      "github.com/i-open/beego/config"
 //  )
 //
 //  cnf, err := config.NewConfig("xml", "config.xml")
@@ -41,8 +41,8 @@ import (
 
 	"github.com/mitchellh/mapstructure"
 
-	"github.com/astaxie/beego/core/config"
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/config"
+	"github.com/i-open/beego/core/logs"
 
 	"github.com/beego/x2j"
 )

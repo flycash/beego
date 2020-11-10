@@ -15,8 +15,8 @@
 // Package auth provides handlers to enable basic auth support.
 // Simple Usage:
 //	import(
-//		"github.com/astaxie/beego"
-//		"github.com/astaxie/beego/plugins/auth"
+//		"github.com/i-open/beego"
+//		"github.com/i-open/beego/plugins/auth"
 //	)
 //
 //	func main(){
@@ -38,10 +38,10 @@ package auth
 import (
 	"net/http"
 
-	beego "github.com/astaxie/beego/adapter"
-	"github.com/astaxie/beego/adapter/context"
-	beecontext "github.com/astaxie/beego/server/web/context"
-	"github.com/astaxie/beego/server/web/filter/auth"
+	beego "github.com/i-open/beego/adapter"
+	"github.com/i-open/beego/adapter/context"
+	beecontext "github.com/i-open/beego/server/web/context"
+	"github.com/i-open/beego/server/web/filter/auth"
 )
 
 // Basic is the http basic auth

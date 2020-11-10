@@ -28,10 +28,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/astaxie/beego/server/web/session"
+	"github.com/i-open/beego/server/web/session"
 
-	"github.com/astaxie/beego/server/web/context"
-	"github.com/astaxie/beego/server/web/context/param"
+	"github.com/i-open/beego/server/web/context"
+	"github.com/i-open/beego/server/web/context/param"
 )
 
 var (

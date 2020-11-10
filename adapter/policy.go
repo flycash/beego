@@ -15,9 +15,9 @@
 package adapter
 
 import (
-	"github.com/astaxie/beego/adapter/context"
-	"github.com/astaxie/beego/server/web"
-	beecontext "github.com/astaxie/beego/server/web/context"
+	"github.com/i-open/beego/adapter/context"
+	"github.com/i-open/beego/server/web"
+	beecontext "github.com/i-open/beego/server/web/context"
 )
 
 // PolicyFunc defines a policy function which is invoked before the controller handler is executed.

@@ -1,4 +1,4 @@
-# Beego [![Build Status](https://travis-ci.org/astaxie/beego.svg?branch=master)](https://travis-ci.org/astaxie/beego) [![GoDoc](http://godoc.org/github.com/astaxie/beego?status.svg)](http://godoc.org/github.com/astaxie/beego) [![Foundation](https://img.shields.io/badge/Golang-Foundation-green.svg)](http://golangfoundation.org) [![Go Report Card](https://goreportcard.com/badge/github.com/astaxie/beego)](https://goreportcard.com/report/github.com/astaxie/beego)
+# Beego [![Build Status](https://travis-ci.org/astaxie/beego.svg?branch=master)](https://travis-ci.org/astaxie/beego) [![GoDoc](http://godoc.org/github.com/i-open/beego?status.svg)](http://godoc.org/github.com/i-open/beego) [![Foundation](https://img.shields.io/badge/Golang-Foundation-green.svg)](http://golangfoundation.org) [![Go Report Card](https://goreportcard.com/badge/github.com/i-open/beego)](https://goreportcard.com/report/github.com/i-open/beego)
 
 
 beego is used for rapid development of RESTful APIs, web apps and backend services in Go.
@@ -25,13 +25,13 @@ It is inspired by Tornado, Sinatra and Flask. beego has some Go-specific feature
 
 #### Download and install
 
-    go get github.com/astaxie/beego
+    go get github.com/i-open/beego
 
 #### Create file `hello.go`
 ```go
 package main
 
-import "github.com/astaxie/beego/server/web"
+import "github.com/i-open/beego/server/web"
 
 func main(){
     web.Run()
@@ -53,8 +53,8 @@ Congratulations! You've just built your first **beego** app.
 package main
 
 import (
-	"github.com/astaxie/beego/client/orm"
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/client/orm"
+	"github.com/i-open/beego/core/logs"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -101,8 +101,8 @@ func main() {
 package main
 
 import (
-	"github.com/astaxie/beego/client/httplib"
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/client/httplib"
+	"github.com/i-open/beego/core/logs"
 )
 
 func main() {
@@ -125,8 +125,8 @@ package main
 import (
 	"context"
 
-	"github.com/astaxie/beego/core/config"
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/config"
+	"github.com/i-open/beego/core/logs"
 )
 
 var (
@@ -148,7 +148,7 @@ func main() {
 package main
 
 import (
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/logs"
 )
 
 func main() {
@@ -168,8 +168,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/astaxie/beego/core/logs"
-	"github.com/astaxie/beego/task"
+	"github.com/i-open/beego/core/logs"
+	"github.com/i-open/beego/task"
 )
 
 func main() {
@@ -203,12 +203,12 @@ import (
 	"context"
 	"time"
 
-	"github.com/astaxie/beego/client/cache"
+	"github.com/i-open/beego/client/cache"
 
 	// don't forget this
-	_ "github.com/astaxie/beego/client/cache/redis"
+	_ "github.com/i-open/beego/client/cache/redis"
 
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/logs"
 )
 
 func main() {

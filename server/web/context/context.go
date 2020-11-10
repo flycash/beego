@@ -15,7 +15,7 @@
 // Package context provide the context utils
 // Usage:
 //
-//	import "github.com/astaxie/beego/context"
+//	import "github.com/i-open/beego/context"
 //
 //	ctx := context.Context{Request:req,ResponseWriter:rw}
 //
@@ -35,7 +35,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/astaxie/beego/core/utils"
+	"github.com/i-open/beego/core/utils"
 )
 
 // Commonly used mime-types

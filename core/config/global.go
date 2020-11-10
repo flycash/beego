@@ -15,7 +15,7 @@
 package config
 
 import (
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/logs"
 )
 
 // We use this to simply application's development
@@ -33,7 +33,7 @@ func init() {
 
 // InitGlobalInstance will ini the global instance
 // If you want to use specific implementation, don't forget to import it.
-// e.g. _ import "github.com/astaxie/beego/core/config/etcd"
+// e.g. _ import "github.com/i-open/beego/core/config/etcd"
 // err := InitGlobalInstance("etcd", "someconfig")
 func InitGlobalInstance(name string, cfg string) error {
 	var err error

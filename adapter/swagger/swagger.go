@@ -21,7 +21,7 @@
 package swagger
 
 import (
-	"github.com/astaxie/beego/server/web/swagger"
+	"github.com/i-open/beego/server/web/swagger"
 )
 
 // Swagger list the resource

@@ -15,7 +15,7 @@
 package utils
 
 import (
-	"github.com/astaxie/beego/core/utils"
+	"github.com/i-open/beego/core/utils"
 )
 
 // Display print the data in console

@@ -15,7 +15,7 @@
 package context
 
 import (
-	"github.com/astaxie/beego/server/web/context"
+	"github.com/i-open/beego/server/web/context"
 )
 
 // BeegoInput operates the http request header, data, cookie and body.

@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/astaxie/beego/client/orm/hints"
+	"github.com/i-open/beego/client/orm/hints"
 )
 
 // oracle operators.

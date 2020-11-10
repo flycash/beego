@@ -4,9 +4,9 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/astaxie/beego/adapter/session"
+	"github.com/i-open/beego/adapter/session"
 
-	beeSsdb "github.com/astaxie/beego/server/web/session/ssdb"
+	beeSsdb "github.com/i-open/beego/server/web/session/ssdb"
 )
 
 // Provider holds ssdb client and configs

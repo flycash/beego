@@ -20,8 +20,8 @@
 //
 // Usage:
 // import(
-//   _ "github.com/astaxie/beego/session/redis_cluster"
-//   "github.com/astaxie/beego/session"
+//   _ "github.com/i-open/beego/session/redis_cluster"
+//   "github.com/i-open/beego/session"
 // )
 //
 //	func init() {
@@ -36,8 +36,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/astaxie/beego/adapter/session"
-	cluster "github.com/astaxie/beego/server/web/session/redis_cluster"
+	"github.com/i-open/beego/adapter/session"
+	cluster "github.com/i-open/beego/server/web/session/redis_cluster"
 )
 
 // MaxPoolSize redis_cluster max pool size

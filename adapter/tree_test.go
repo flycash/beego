@@ -17,8 +17,8 @@ package adapter
 import (
 	"testing"
 
-	"github.com/astaxie/beego/adapter/context"
-	beecontext "github.com/astaxie/beego/server/web/context"
+	"github.com/i-open/beego/adapter/context"
+	beecontext "github.com/i-open/beego/server/web/context"
 )
 
 type testinfo struct {

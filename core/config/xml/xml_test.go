@@ -21,7 +21,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/astaxie/beego/core/config"
+	"github.com/i-open/beego/core/config"
 )
 
 func TestXML(t *testing.T) {

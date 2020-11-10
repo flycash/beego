@@ -15,8 +15,8 @@
 // Package cors provides handlers to enable CORS support.
 // Usage
 //	import (
-// 		"github.com/astaxie/beego"
-//		"github.com/astaxie/beego/plugins/cors"
+// 		"github.com/i-open/beego"
+//		"github.com/i-open/beego/plugins/cors"
 // )
 //
 //	func main() {
@@ -36,11 +36,11 @@
 package cors
 
 import (
-	beego "github.com/astaxie/beego/adapter"
-	beecontext "github.com/astaxie/beego/server/web/context"
-	"github.com/astaxie/beego/server/web/filter/cors"
+	beego "github.com/i-open/beego/adapter"
+	beecontext "github.com/i-open/beego/server/web/context"
+	"github.com/i-open/beego/server/web/filter/cors"
 
-	"github.com/astaxie/beego/adapter/context"
+	"github.com/i-open/beego/adapter/context"
 )
 
 // Options represents Access Control options.

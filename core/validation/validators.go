@@ -23,7 +23,7 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/logs"
 )
 
 // CanSkipFuncs will skip valid if RequiredFirst is true and the struct field's value is empty

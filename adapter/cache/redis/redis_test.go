@@ -22,7 +22,7 @@ import (
 
 	"github.com/gomodule/redigo/redis"
 
-	"github.com/astaxie/beego/adapter/cache"
+	"github.com/i-open/beego/adapter/cache"
 )
 
 func TestRedisCache(t *testing.T) {

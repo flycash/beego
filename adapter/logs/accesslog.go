@@ -15,7 +15,7 @@
 package logs
 
 import (
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/logs"
 )
 
 // AccessLogRecord struct for holding access log data.

@@ -15,7 +15,7 @@
 package config
 
 import (
-	"github.com/astaxie/beego/core/config"
+	"github.com/i-open/beego/core/config"
 )
 
 // NewFakeConfig return a fake Configer

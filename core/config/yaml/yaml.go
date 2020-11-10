@@ -20,8 +20,8 @@
 //
 // Usage:
 //  import(
-//   _ "github.com/astaxie/beego/config/yaml"
-//     "github.com/astaxie/beego/config"
+//   _ "github.com/i-open/beego/config/yaml"
+//     "github.com/i-open/beego/config"
 //  )
 //
 //  cnf, err := config.NewConfig("yaml", "config.yaml")
@@ -43,8 +43,8 @@ import (
 	"github.com/beego/goyaml2"
 	"gopkg.in/yaml.v2"
 
-	"github.com/astaxie/beego/core/config"
-	"github.com/astaxie/beego/core/logs"
+	"github.com/i-open/beego/core/config"
+	"github.com/i-open/beego/core/logs"
 )
 
 // Config is a yaml config parser and implements Config interface.
