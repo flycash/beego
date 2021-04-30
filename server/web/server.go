@@ -473,11 +473,11 @@ func RouterGet(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterGet("/api/:id", MyController.Ping)
+//    RouterGet("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterGet(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterGet(rootpath, f)
 	return app
@@ -493,11 +493,11 @@ func RouterPost(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterPost("/api/:id", MyController.Ping)
+//    RouterPost("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterPost(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterPost(rootpath, f)
 	return app
@@ -513,11 +513,11 @@ func RouterHead(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterHead("/api/:id", MyController.Ping)
+//    RouterHead("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterHead(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterHead(rootpath, f)
 	return app
@@ -533,11 +533,11 @@ func RouterPut(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterPut("/api/:id", MyController.Ping)
+//    RouterPut("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterPut(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterPut(rootpath, f)
 	return app
@@ -553,11 +553,11 @@ func RouterPatch(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterPatch("/api/:id", MyController.Ping)
+//    RouterPatch("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterPatch(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterPatch(rootpath, f)
 	return app
@@ -573,11 +573,11 @@ func RouterDelete(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterDelete("/api/:id", MyController.Ping)
+//    RouterDelete("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterDelete(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterDelete(rootpath, f)
 	return app
@@ -593,11 +593,11 @@ func RouterOptions(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterOptions("/api/:id", MyController.Ping)
+//    RouterOptions("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterOptions(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterOptions(rootpath, f)
 	return app
@@ -613,11 +613,11 @@ func RouterAny(rootpath string, f interface{}) {
 //    type MyController struct {
 //	     web.Controller
 //    }
-//    func (m MyController) Ping() {
+//    func (m *MyController) Ping() {
 //	     m.Ctx.Output.Body([]byte("hello world"))
 //    }
 //
-//    RouterAny("/api/:id", MyController.Ping)
+//    RouterAny("/api/:id", (*MyController).Ping)
 func (app *HttpServer) RouterAny(rootpath string, f interface{}) *HttpServer {
 	app.Handlers.RouterAny(rootpath, f)
 	return app
