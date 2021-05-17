@@ -18,8 +18,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/beego/beego/v2/core/logs"
 	"net/http"
 	"strconv"
+	"strings"
 	"text/template"
 
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -290,8 +292,24 @@ func buildHealthCheckResponseList(healthCheckResults *[][]string) []map[string]i
 
 }
 
-// PrintTree print all routers
-// Deprecated using BeeApp directly
 func PrintTree() M {
 	return BeeApp.PrintTree()
+}
+
+func GetAllRouterInfo() []RouterInfo {
+	return BeeApp.GetAllRouterInfo()
+}
+
+func DebugAllRouterInfo() {
+	routerInfoList := GetAllRouterInfo()
+	for _, r := range routerInfoList {
+		logs.Debug("%s %s ==> %s#%s", strings.Join(r.HttpMethod, ","), r.Router, r.ControllerName, r.MethodName)
+	}
+}
+
+type RouterInfo struct {
+	HttpMethod []string // [GET, POST]
+	ControllerName string // main.HelloController
+	Router string // /hello
+	MethodName string // HelloWorld
 }

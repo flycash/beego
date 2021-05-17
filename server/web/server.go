@@ -855,6 +855,17 @@ func (app *HttpServer) PrintTree() M {
 	return content
 }
 
+func (app *HttpServer) GetAllRouterInfo()[]RouterInfo {
+	return []RouterInfo{
+		{
+			HttpMethod: []string{"GET", "POST"},
+			ControllerName: "main.HelloController",
+			Router: "/hello",
+			MethodName: "HelloWorld",
+		},
+	}
+}
+
 func printTree(resultList *[][]string, t *Tree) {
 	for _, tr := range t.fixrouters {
 		printTree(resultList, tr)
