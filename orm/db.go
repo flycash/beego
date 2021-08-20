@@ -702,13 +702,6 @@ func (d *dbBase) Delete(q dbQuerier, mi *modelInfo, ind reflect.Value, tz *time.
 			return 0, err
 		}
 		if num > 0 {
-			if mi.fields.pk.auto {
-				if mi.fields.pk.fieldType&IsPositiveIntegerField > 0 {
-					ind.FieldByIndex(mi.fields.pk.fieldIndex).SetUint(0)
-				} else {
-					ind.FieldByIndex(mi.fields.pk.fieldIndex).SetInt(0)
-				}
-			}
 			err := d.deleteRels(q, mi, args, tz)
 			if err != nil {
 				return num, err
