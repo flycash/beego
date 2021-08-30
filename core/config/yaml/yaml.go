@@ -13,11 +13,6 @@
 // limitations under the License.
 
 // Package yaml for config provider
-//
-// depend on github.com/beego/goyaml2
-//
-// go install github.com/beego/goyaml2
-//
 // Usage:
 //  import(
 //   _ "github.com/beego/beego/v2/core/config/yaml"
@@ -30,17 +25,13 @@
 package yaml
 
 import (
-	"bytes"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"strings"
 	"sync"
 
-	"github.com/beego/goyaml2"
 	"gopkg.in/yaml.v2"
 
 	"github.com/beego/beego/v2/core/config"
@@ -51,7 +42,7 @@ import (
 type Config struct{}
 
 // Parse returns a ConfigContainer with parsed yaml config map.
-func (yaml *Config) Parse(filename string) (y config.Configer, err error) {
+func (c *Config) Parse(filename string) (y config.Configer, err error) {
 	cnf, err := ReadYmlReader(filename)
 	if err != nil {
 		return
@@ -63,7 +54,7 @@ func (yaml *Config) Parse(filename string) (y config.Configer, err error) {
 }
 
 // ParseData parse yaml data
-func (yaml *Config) ParseData(data []byte) (config.Configer, error) {
+func (c *Config) ParseData(data []byte) (config.Configer, error) {
 	cnf, err := parseYML(data)
 	if err != nil {
 		return nil, err
@@ -75,7 +66,6 @@ func (yaml *Config) ParseData(data []byte) (config.Configer, error) {
 }
 
 // ReadYmlReader Read yaml file to map.
-// if json like, use json package, unless goyaml2 package.
 func ReadYmlReader(path string) (cnf map[string]interface{}, err error) {
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
@@ -86,37 +76,14 @@ func ReadYmlReader(path string) (cnf map[string]interface{}, err error) {
 }
 
 // parseYML parse yaml formatted []byte to map.
-func parseYML(buf []byte) (cnf map[string]interface{}, err error) {
-	if len(buf) < 3 {
-		return
-	}
-
-	if string(buf[0:1]) == "{" {
-		log.Println("Look like a Json, try json umarshal")
-		err = json.Unmarshal(buf, &cnf)
-		if err == nil {
-			log.Println("It is Json Map")
-			return
-		}
-	}
-
-	data, err := goyaml2.Read(bytes.NewReader(buf))
+func parseYML(buf []byte) (map[string]interface{}, error) {
+	cnf := make(map[string]interface{})
+	err := yaml.Unmarshal(buf, cnf)
 	if err != nil {
-		log.Println("Goyaml2 ERR>", string(buf), err)
-		return
-	}
-
-	if data == nil {
-		log.Println("Goyaml2 output nil? Pls report bug\n" + string(buf))
-		return
-	}
-	cnf, ok := data.(map[string]interface{})
-	if !ok {
-		log.Println("Not a Map? >> ", string(buf), data)
-		cnf = nil
+		return nil, err
 	}
 	cnf = config.ExpandValueEnvForMap(cnf)
-	return
+	return cnf, err
 }
 
 // ConfigContainer is a config which represents the yaml configuration.
@@ -154,16 +121,14 @@ func (c *ConfigContainer) sub(key string) (map[string]interface{}, error) {
 	keys := strings.Split(key, ".")
 	for idx, k := range keys {
 		if v, ok := tmpData[k]; ok {
-			switch v.(type) {
+			switch val := v.(type) {
 			case map[string]interface{}:
-				{
-					tmpData = v.(map[string]interface{})
-					if idx == len(keys)-1 {
-						return tmpData, nil
-					}
+				tmpData = val
+				if idx == len(keys)-1 {
+					return tmpData, nil
 				}
 			default:
-				return nil, errors.New(fmt.Sprintf("the key is invalid: %s", key))
+				return nil, fmt.Errorf("the key is invalid: %s", key)
 			}
 		}
 	}
@@ -219,12 +184,18 @@ func (c *ConfigContainer) DefaultInt(key string, defaultVal int) int {
 
 // Int64 returns the int64 value for a given key.
 func (c *ConfigContainer) Int64(key string) (int64, error) {
-	if v, err := c.getData(key); err != nil {
+	v, err := c.getData(key)
+	if err != nil {
 		return 0, err
-	} else if vv, ok := v.(int64); ok {
-		return vv, nil
 	}
-	return 0, errors.New("not bool value")
+	switch val := v.(type) {
+	case int:
+		return int64(val), nil
+	case int64:
+		return val, nil
+	default:
+		return 0, errors.New("not int or int64 value")
+	}
 }
 
 // DefaultInt64 returns the int64 value for a given key.
@@ -303,7 +274,18 @@ func (c *ConfigContainer) DefaultStrings(key string, defaultVal []string) []stri
 // GetSection returns map for the given section
 func (c *ConfigContainer) GetSection(section string) (map[string]string, error) {
 	if v, ok := c.data[section]; ok {
-		return v.(map[string]string), nil
+		switch val := v.(type) {
+		case map[string]interface{}:
+			res := make(map[string]string, len(val))
+			for k2, v2 := range val {
+				res[k2] = fmt.Sprintf("%v", v2)
+			}
+			return res, nil
+		case map[string]string:
+			return val, nil
+		default:
+			return nil, fmt.Errorf("unexpected type: %v", v)
+		}
 	}
 	return nil, errors.New("not exist section")
 }
@@ -316,7 +298,11 @@ func (c *ConfigContainer) SaveConfigFile(filename string) (err error) {
 		return err
 	}
 	defer f.Close()
-	err = goyaml2.Write(f, c.data)
+	buf, err := yaml.Marshal(c.data)
+	if err != nil {
+		return err
+	}
+	_, err = f.Write(buf)
 	return err
 }
 
@@ -344,19 +330,14 @@ func (c *ConfigContainer) getData(key string) (interface{}, error) {
 	tmpData := c.data
 	for idx, k := range keys {
 		if v, ok := tmpData[k]; ok {
-			switch v.(type) {
+			switch val := v.(type) {
 			case map[string]interface{}:
-				{
-					tmpData = v.(map[string]interface{})
-					if idx == len(keys)-1 {
-						return tmpData, nil
-					}
+				tmpData = val
+				if idx == len(keys)-1 {
+					return tmpData, nil
 				}
 			default:
-				{
-					return v, nil
-				}
-
+				return v, nil
 			}
 		}
 	}

@@ -249,6 +249,12 @@ func ExpandValueEnvForMap(m map[string]interface{}) map[string]interface{} {
 				value[k2] = ExpandValueEnv(v2)
 			}
 			m[k] = value
+		case map[interface{}]interface{}:
+			tmp := make(map[string]interface{}, len(value))
+			for k2, v2 := range value {
+				tmp[k2.(string)] = v2
+			}
+			m[k] = ExpandValueEnvForMap(tmp)
 		}
 	}
 	return m
