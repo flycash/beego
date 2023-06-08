@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package orm
+package models
 
 import (
 	"database/sql"
@@ -20,6 +20,8 @@ import (
 	"reflect"
 	"strings"
 	"time"
+
+	"github.com/beego/beego/v2/client/orm"
 )
 
 // 1 is attr
@@ -48,15 +50,29 @@ var supportTag = map[string]int{
 	"precision":    2,
 }
 
-// get reflect.Type name with package path.
-func getFullName(typ reflect.Type) string {
+type fn func(string) string
+
+var (
+	NameStrategyMap = map[string]fn{
+		DefaultNameStrategy:      SnakeString,
+		SnakeAcronymNameStrategy: SnakeStringWithAcronym,
+	}
+	DefaultNameStrategy      = "snakeString"
+	SnakeAcronymNameStrategy = "snakeStringWithAcronym"
+	NameStrategy             = DefaultNameStrategy
+	defaultStructTagDelim    = ";"
+	DefaultStructTagName     = "orm"
+)
+
+// GetFullName get reflect.Type name with package path.
+func GetFullName(typ reflect.Type) string {
 	return typ.PkgPath() + "." + typ.Name()
 }
 
-// getTableName get struct table name.
+// GetTableName get struct table name.
 // If the struct implement the TableName, then get the result as tablename
 // else use the struct name which will apply snakeString.
-func getTableName(val reflect.Value) string {
+func GetTableName(val reflect.Value) string {
 	if fun := val.MethodByName("TableName"); fun.IsValid() {
 		vals := fun.Call([]reflect.Value{})
 		// has return and the first val is string
@@ -64,11 +80,11 @@ func getTableName(val reflect.Value) string {
 			return vals[0].String()
 		}
 	}
-	return snakeString(reflect.Indirect(val).Type().Name())
+	return SnakeString(reflect.Indirect(val).Type().Name())
 }
 
-// get table engine, myisam or innodb.
-func getTableEngine(val reflect.Value) string {
+// GetTableEngine get table engine, myisam or innodb.
+func GetTableEngine(val reflect.Value) string {
 	fun := val.MethodByName("TableEngine")
 	if fun.IsValid() {
 		vals := fun.Call([]reflect.Value{})
@@ -79,8 +95,8 @@ func getTableEngine(val reflect.Value) string {
 	return ""
 }
 
-// get table index from method.
-func getTableIndex(val reflect.Value) [][]string {
+// GetTableIndex get table index from method.
+func GetTableIndex(val reflect.Value) [][]string {
 	fun := val.MethodByName("TableIndex")
 	if fun.IsValid() {
 		vals := fun.Call([]reflect.Value{})
@@ -93,8 +109,8 @@ func getTableIndex(val reflect.Value) [][]string {
 	return nil
 }
 
-// get table unique from method
-func getTableUnique(val reflect.Value) [][]string {
+// GetTableUnique get table unique from method
+func GetTableUnique(val reflect.Value) [][]string {
 	fun := val.MethodByName("TableUnique")
 	if fun.IsValid() {
 		vals := fun.Call([]reflect.Value{})
@@ -107,8 +123,8 @@ func getTableUnique(val reflect.Value) [][]string {
 	return nil
 }
 
-// get whether the table needs to be created for the database alias
-func isApplicableTableForDB(val reflect.Value, db string) bool {
+// IsApplicableTableForDB get whether the table needs to be created for the database alias
+func IsApplicableTableForDB(val reflect.Value, db string) bool {
 	if !val.IsValid() {
 		return true
 	}
@@ -126,14 +142,14 @@ func isApplicableTableForDB(val reflect.Value, db string) bool {
 func getColumnName(ft int, addrField reflect.Value, sf reflect.StructField, col string) string {
 	column := col
 	if col == "" {
-		column = nameStrategyMap[nameStrategy](sf.Name)
+		column = NameStrategyMap[NameStrategy](sf.Name)
 	}
 	switch ft {
-	case RelForeignKey, RelOneToOne:
+	case orm.RelForeignKey, orm.RelOneToOne:
 		if len(col) == 0 {
 			column = column + "_id"
 		}
-	case RelManyToMany, RelReverseMany, RelReverseOne:
+	case orm.RelManyToMany, orm.RelReverseMany, orm.RelReverseOne:
 		column = sf.Name
 	}
 	return column
@@ -143,83 +159,83 @@ func getColumnName(ft int, addrField reflect.Value, sf reflect.StructField, col 
 func getFieldType(val reflect.Value) (ft int, err error) {
 	switch val.Type() {
 	case reflect.TypeOf(new(int8)):
-		ft = TypeBitField
+		ft = orm.TypeBitField
 	case reflect.TypeOf(new(int16)):
-		ft = TypeSmallIntegerField
+		ft = orm.TypeSmallIntegerField
 	case reflect.TypeOf(new(int32)),
 		reflect.TypeOf(new(int)):
-		ft = TypeIntegerField
+		ft = orm.TypeIntegerField
 	case reflect.TypeOf(new(int64)):
-		ft = TypeBigIntegerField
+		ft = orm.TypeBigIntegerField
 	case reflect.TypeOf(new(uint8)):
-		ft = TypePositiveBitField
+		ft = orm.TypePositiveBitField
 	case reflect.TypeOf(new(uint16)):
-		ft = TypePositiveSmallIntegerField
+		ft = orm.TypePositiveSmallIntegerField
 	case reflect.TypeOf(new(uint32)),
 		reflect.TypeOf(new(uint)):
-		ft = TypePositiveIntegerField
+		ft = orm.TypePositiveIntegerField
 	case reflect.TypeOf(new(uint64)):
-		ft = TypePositiveBigIntegerField
+		ft = orm.TypePositiveBigIntegerField
 	case reflect.TypeOf(new(float32)),
 		reflect.TypeOf(new(float64)):
-		ft = TypeFloatField
+		ft = orm.TypeFloatField
 	case reflect.TypeOf(new(bool)):
-		ft = TypeBooleanField
+		ft = orm.TypeBooleanField
 	case reflect.TypeOf(new(string)):
-		ft = TypeVarCharField
+		ft = orm.TypeVarCharField
 	case reflect.TypeOf(new(time.Time)):
-		ft = TypeDateTimeField
+		ft = orm.TypeDateTimeField
 	default:
 		elm := reflect.Indirect(val)
 		switch elm.Kind() {
 		case reflect.Int8:
-			ft = TypeBitField
+			ft = orm.TypeBitField
 		case reflect.Int16:
-			ft = TypeSmallIntegerField
+			ft = orm.TypeSmallIntegerField
 		case reflect.Int32, reflect.Int:
-			ft = TypeIntegerField
+			ft = orm.TypeIntegerField
 		case reflect.Int64:
-			ft = TypeBigIntegerField
+			ft = orm.TypeBigIntegerField
 		case reflect.Uint8:
-			ft = TypePositiveBitField
+			ft = orm.TypePositiveBitField
 		case reflect.Uint16:
-			ft = TypePositiveSmallIntegerField
+			ft = orm.TypePositiveSmallIntegerField
 		case reflect.Uint32, reflect.Uint:
-			ft = TypePositiveIntegerField
+			ft = orm.TypePositiveIntegerField
 		case reflect.Uint64:
-			ft = TypePositiveBigIntegerField
+			ft = orm.TypePositiveBigIntegerField
 		case reflect.Float32, reflect.Float64:
-			ft = TypeFloatField
+			ft = orm.TypeFloatField
 		case reflect.Bool:
-			ft = TypeBooleanField
+			ft = orm.TypeBooleanField
 		case reflect.String:
-			ft = TypeVarCharField
+			ft = orm.TypeVarCharField
 		default:
 			if elm.Interface() == nil {
 				panic(fmt.Errorf("%s is nil pointer, may be miss setting tag", val))
 			}
 			switch elm.Interface().(type) {
 			case sql.NullInt64:
-				ft = TypeBigIntegerField
+				ft = orm.TypeBigIntegerField
 			case sql.NullFloat64:
-				ft = TypeFloatField
+				ft = orm.TypeFloatField
 			case sql.NullBool:
-				ft = TypeBooleanField
+				ft = orm.TypeBooleanField
 			case sql.NullString:
-				ft = TypeVarCharField
+				ft = orm.TypeVarCharField
 			case time.Time:
-				ft = TypeDateTimeField
+				ft = orm.TypeDateTimeField
 			}
 		}
 	}
-	if ft&IsFieldType == 0 {
+	if ft&orm.IsFieldType == 0 {
 		err = fmt.Errorf("unsupport field type %s, may be miss setting tag", val)
 	}
 	return
 }
 
-// parse struct tag string
-func parseStructTag(data string) (attrs map[string]bool, tags map[string]string) {
+// ParseStructTag parse struct tag string
+func ParseStructTag(data string) (attrs map[string]bool, tags map[string]string) {
 	attrs = make(map[string]bool)
 	tags = make(map[string]string)
 	for _, v := range strings.Split(data, defaultStructTagDelim) {
@@ -236,8 +252,74 @@ func parseStructTag(data string) (attrs map[string]bool, tags map[string]string)
 				tags[name] = v
 			}
 		} else {
-			DebugLog.Println("unsupport orm tag", v)
+			orm.DebugLog.Println("unsupport orm tag", v)
 		}
 	}
 	return
 }
+
+func SnakeStringWithAcronym(s string) string {
+	data := make([]byte, 0, len(s)*2)
+	num := len(s)
+	for i := 0; i < num; i++ {
+		d := s[i]
+		before := false
+		after := false
+		if i > 0 {
+			before = s[i-1] >= 'a' && s[i-1] <= 'z'
+		}
+		if i+1 < num {
+			after = s[i+1] >= 'a' && s[i+1] <= 'z'
+		}
+		if i > 0 && d >= 'A' && d <= 'Z' && (before || after) {
+			data = append(data, '_')
+		}
+		data = append(data, d)
+	}
+	return strings.ToLower(string(data))
+}
+
+// SnakeString snake string, XxYy to xx_yy , XxYY to xx_y_y
+func SnakeString(s string) string {
+	data := make([]byte, 0, len(s)*2)
+	j := false
+	num := len(s)
+	for i := 0; i < num; i++ {
+		d := s[i]
+		if i > 0 && d >= 'A' && d <= 'Z' && j {
+			data = append(data, '_')
+		}
+		if d != '_' {
+			j = true
+		}
+		data = append(data, d)
+	}
+	return strings.ToLower(string(data))
+}
+
+// CamelString camel string, xx_yy to XxYy
+func CamelString(s string) string {
+	data := make([]byte, 0, len(s))
+	flag, num := true, len(s)-1
+	for i := 0; i <= num; i++ {
+		d := s[i]
+		if d == '_' {
+			flag = true
+			continue
+		} else if flag {
+			if d >= 'a' && d <= 'z' {
+				d = d - 32
+			}
+			flag = false
+		}
+		data = append(data, d)
+	}
+	return string(data)
+}
+
+const (
+	OdCascade    = "cascade"
+	OdSetNULL    = "set_null"
+	OdSetDefault = "set_default"
+	OdDoNothing  = "do_nothing"
+)
