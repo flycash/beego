@@ -3,6 +3,7 @@ module github.com/beego/beego/v2
 go 1.18
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.1
 	github.com/beego/x2j v0.0.0-20131220205130-a0352aadc542
 	github.com/bits-and-blooms/bloom/v3 v3.6.0
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
@@ -14,7 +15,7 @@ require (
 	github.com/go-kit/kit v0.12.1-0.20220826005032-a7ba4fa4e289
 	github.com/go-kit/log v0.2.1
 	github.com/go-redis/redis/v7 v7.4.0
-	github.com/go-sql-driver/mysql v1.7.0
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/gomodule/redigo v2.0.0+incompatible
 	github.com/google/uuid v1.3.0
@@ -45,7 +46,7 @@ require (
 )
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.1 // indirect
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.10.0 // indirect
