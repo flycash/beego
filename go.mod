@@ -3,6 +3,7 @@ module github.com/beego/beego/v2
 go 1.18
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.1
 	github.com/beego/x2j v0.0.0-20131220205130-a0352aadc542
 	github.com/bits-and-blooms/bloom/v3 v3.6.0
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
@@ -30,7 +31,7 @@ require (
 	github.com/prometheus/client_golang v1.17.0
 	github.com/shiena/ansicolor v0.0.0-20200904210342-c7312218db18
 	github.com/ssdb/gossdb v0.0.0-20180723034631-88f6b59b84ec
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.9.0
 	github.com/valyala/bytebufferpool v1.0.0
 	go.etcd.io/etcd/client/v3 v3.5.9
 	go.opentelemetry.io/otel v1.11.2
@@ -45,7 +46,6 @@ require (
 )
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.1 // indirect
 	github.com/Knetic/govaluate v3.0.1-0.20171022003610-9aa49832a739+incompatible // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bits-and-blooms/bitset v1.10.0 // indirect
